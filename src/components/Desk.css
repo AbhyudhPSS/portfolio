@@ -1,0 +1,185 @@
+.desk {
+  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: 0 var(--section);
+}
+
+.desk__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-8);
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.desk__title {
+  font-size: var(--t-xl);
+  max-width: 13ch;
+  font-variation-settings: 'wdth' 92, 'opsz' 72;
+}
+
+.desk__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  color: var(--fg-faint);
+  padding-bottom: 0.6em;
+  white-space: nowrap;
+}
+
+.desk__hint-arrow {
+  display: inline-block;
+  color: var(--accent);
+  animation: nudge 2.2s var(--ease-in-out) infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .desk__hint-arrow {
+    animation: none;
+  }
+}
+
+/* --- Surface ------------------------------------------------- */
+.desk__surface {
+  position: relative;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  background-image: radial-gradient(var(--rule) 1px, transparent 1px);
+  background-size: 26px 26px;
+  overflow: hidden;
+}
+
+.desk__surface.is-scatter {
+  height: clamp(30rem, 42vw, 38rem);
+}
+
+.desk__items {
+  position: relative;
+  height: 100%;
+}
+
+/* --- Cards --------------------------------------------------- */
+.desk__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  padding: var(--s-4) var(--s-4) var(--s-4) var(--s-6);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 2px 14px 14px 14px;
+  box-shadow: 0 1px 0 var(--rule-soft), 0 12px 28px -22px rgba(0, 0, 0, 0.5);
+  max-width: 24ch;
+  transition: box-shadow var(--dur) var(--ease-out),
+    border-color var(--dur-fast);
+}
+
+.is-scatter .desk__card {
+  position: absolute;
+  width: clamp(14rem, 21vw, 18rem);
+  max-width: none;
+  cursor: grab;
+  touch-action: none;
+  will-change: transform;
+}
+
+.is-scatter .desk__card:hover {
+  border-color: var(--fg-faint);
+  box-shadow: 0 1px 0 var(--rule-soft), 0 22px 40px -26px rgba(0, 0, 0, 0.55);
+}
+
+.desk__tag {
+  color: var(--fg-faint);
+}
+
+.desk__card[data-tone='signal'] .desk__tag {
+  color: var(--signal-ink);
+}
+
+.desk__card[data-tone='acid'] .desk__tag {
+  /* Acid is unreadable on paper — use the ink tone instead. */
+  color: #5a6626;
+}
+
+.desk__card[data-tone='ink'] .desk__tag {
+  color: var(--fg);
+}
+
+.desk__text {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(0.98rem, 1.35vw, 1.15rem);
+  line-height: 1.28;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+  font-variation-settings: 'wdth' 100, 'opsz' 18;
+}
+
+/* --- Stacked fallback ---------------------------------------- */
+.desk__surface:not(.is-scatter) {
+  background-image: none;
+  border: none;
+  border-radius: 0;
+}
+
+.desk__surface:not(.is-scatter) .desk__items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--s-3);
+}
+
+.desk__surface:not(.is-scatter) .desk__card {
+  max-width: none;
+  height: 100%;
+}
+
+/* Phones: no drag (a dragged card and a scrolling page want the same
+   thumb), but the notes can still look dropped rather than filed — on the
+   same dotted mat as desktop, alternating sides, each a degree or so off
+   square. `rotate` is its own property, so it composes with the transform
+   Motion writes for the entrance instead of being overwritten by it. */
+@media (max-width: 600px) {
+  .desk__surface:not(.is-scatter) {
+    padding: var(--s-6) var(--s-4) var(--s-8);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    background-image: radial-gradient(var(--rule) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .desk__surface:not(.is-scatter) .desk__items {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
+  }
+  .desk__surface:not(.is-scatter) .desk__card {
+    width: 86%;
+    height: auto;
+    rotate: -1.4deg;
+  }
+  .desk__surface:not(.is-scatter) .desk__card:nth-child(even) {
+    justify-self: end;
+    rotate: 1.2deg;
+  }
+  .desk__surface:not(.is-scatter) .desk__card:nth-child(3n) {
+    rotate: -0.5deg;
+  }
+  .desk__head {
+    margin-bottom: var(--s-6);
+  }
+  .desk__title {
+    max-width: none;
+  }
+  /* The ledge figure's feet hang over this corner of the label row. */
+  .desk .section-label__meta {
+    visibility: hidden;
+  }
+}

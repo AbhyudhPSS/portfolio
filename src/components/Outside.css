@@ -1,0 +1,159 @@
+.outside {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: 0 var(--section);
+}
+
+.outside__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+  padding-top: clamp(1.5rem, 3vw, 3rem);
+}
+
+/* --- Intro --------------------------------------------------- */
+.outside__title {
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-variation-settings: 'wdth' 92, 'opsz' 72;
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.outside__body {
+  max-width: 34ch;
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--fg-mute);
+}
+
+/* --- Prints -------------------------------------------------- */
+.outside__plates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+/* The second print sits lower, so the pair reads as scattered, not gridded. */
+.outside__slot:nth-child(2) {
+  margin-top: clamp(3rem, 8vw, 7.5rem);
+}
+
+.outside__plate {
+  margin: 0;
+  transform: rotate(-1.1deg);
+}
+
+.outside__slot:nth-child(2) .outside__plate {
+  transform: rotate(1deg);
+}
+
+.outside__frame {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 2px 14px 14px 14px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  box-shadow: 0 1px 0 var(--rule-soft), 0 26px 44px -30px rgba(0, 0, 0, 0.6);
+}
+
+/* <picture> is an inline box by default, which would leave the image's
+   height: 100% resolving against nothing. */
+.outside__frame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.outside__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Captions ------------------------------------------------ */
+.outside__cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15em var(--s-3);
+  padding: var(--s-3) var(--s-1) 0;
+}
+
+.outside__fig {
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  color: var(--accent-text);
+}
+
+.outside__tag {
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  color: var(--fg-faint);
+}
+
+.outside__text {
+  flex-basis: 100%;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(0.98rem, 1.35vw, 1.15rem);
+  line-height: 1.28;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+  font-variation-settings: 'wdth' 100, 'opsz' 18;
+}
+
+/* --- Narrow -------------------------------------------------- */
+@media (max-width: 860px) {
+  .outside__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .outside__title {
+    font-size: var(--t-xl);
+  }
+  .outside__body {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Two ~150px prints side by side are too small to read, but stacked
+     full-width they were two screens of photograph. They overlap instead,
+     like prints dropped on a table: the second lands on the first's lower
+     corner — open floor in the skate shot — and the first print's caption
+     moves above it so the overlap never covers text. */
+  .outside__plates {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+  .outside__slot {
+    position: relative;
+    width: 72%;
+  }
+  .outside__slot:nth-child(2) {
+    z-index: 1;
+    width: 66%;
+    margin-top: -24%;
+    margin-left: auto;
+  }
+  .outside__plate {
+    transform: rotate(-2deg);
+  }
+  .outside__slot:nth-child(2) .outside__plate {
+    transform: rotate(1.8deg);
+  }
+  .outside__slot:first-child .outside__plate {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .outside__slot:first-child .outside__cap {
+    padding: 0 var(--s-1) var(--s-3);
+  }
+  .outside__slot:nth-child(2) .outside__frame {
+    box-shadow: 0 1px 0 var(--rule-soft), 0 30px 50px -24px rgba(0, 0, 0, 0.55);
+  }
+}

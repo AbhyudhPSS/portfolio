@@ -1,0 +1,129 @@
+.log {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: 0 var(--section);
+}
+
+.log__intro {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.log__intro-text {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  max-width: 34ch;
+  color: var(--fg);
+  font-variation-settings: 'wdth' 100, 'opsz' 24;
+}
+
+/* --- List ---------------------------------------------------- */
+.log__list {
+  position: relative;
+  padding-left: clamp(1.5rem, 4vw, 3rem);
+}
+
+.log__spine {
+  position: absolute;
+  top: 0.9rem;
+  bottom: 2.4rem;
+  left: 0;
+  width: 1px;
+  background: var(--rule);
+}
+
+.log__spine-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.log__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--s-6);
+  padding-block: clamp(1.4rem, 2.6vw, 2.2rem);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.log__node {
+  position: absolute;
+  left: calc(-1 * clamp(1.5rem, 4vw, 3rem) - 3.5px);
+  top: calc(clamp(1.4rem, 2.6vw, 2.2rem) + 0.45em);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--accent);
+}
+
+.log__when {
+  color: var(--accent-text);
+  padding-top: 0.35em;
+}
+
+.log__head {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2.1vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  margin-bottom: 0.35em;
+  font-variation-settings: 'wdth' 94, 'opsz' 28;
+}
+
+.log__body {
+  max-width: 56ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--fg-mute);
+}
+
+.log__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-top: 0.7em;
+  color: var(--accent-text);
+  transition: gap var(--dur-fast) var(--ease-out);
+}
+
+.log__link:hover {
+  gap: 0.6em;
+}
+
+.log__i {
+  color: var(--fg-faint);
+  padding-top: 0.35em;
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 760px) {
+  .log__row {
+    grid-template-columns: 1fr auto;
+    gap: var(--s-2) var(--s-4);
+  }
+  .log__when {
+    padding-top: 0;
+  }
+  .log__content {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .log__i {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 0;
+  }
+  .log__node {
+    top: calc(clamp(1.4rem, 2.6vw, 2.2rem) + 0.15em);
+  }
+}

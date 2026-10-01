@@ -1,0 +1,222 @@
+/* ============================================================
+   Pinned horizontal index
+   ============================================================ */
+
+.rail {
+  position: relative;
+}
+
+.rail__viewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* `clip`, never `hidden`: `hidden` makes this a scroll container, and the
+     browser will then natively scroll it to reveal a focused off-screen panel
+     — which the scroll-driven transform below knows nothing about, leaving the
+     track permanently desynced. `clip` cuts the overflow without ever
+     scrolling. The JS guard in ProjectRail.tsx covers the same case for any
+     engine that still treats this as scrollable. */
+  overflow: clip;
+}
+
+.rail__hint {
+  position: absolute;
+  top: clamp(5rem, 13vh, 8rem);
+  left: var(--gutter);
+  color: var(--fg-faint);
+}
+
+.rail__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(3rem, 7vw, 8rem);
+  padding-inline: var(--gutter);
+  width: max-content;
+  will-change: transform;
+}
+
+.rail__panel {
+  flex-shrink: 0;
+}
+
+.rail__panel-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+  text-align: left;
+  color: var(--fg-faint);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.rail__panel-btn:hover,
+.rail__panel-btn:focus-visible {
+  color: var(--fg);
+}
+
+.rail__n {
+  color: var(--art-accent);
+  font-size: var(--t-xs);
+}
+
+.rail__name {
+  font-size: clamp(3.5rem, 8.5vw, 8.5rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 0.9;
+  /* Display tracking is negative site-wide, which makes adjacent glyphs
+     overlap. Filled type absorbs that; a 1.5px outline turns every overlap
+     into a visible crossbar, so this one component tracks open instead. */
+  letter-spacing: 0.005em;
+  color: var(--fg);
+  transition: color var(--dur) var(--ease-out),
+    -webkit-text-stroke-color var(--dur) var(--ease-out);
+  font-variation-settings: 'wdth' 84, 'opsz' 96;
+}
+
+/* Outlined by default, filled on hover — the "select this" affordance.
+   Guarded, because text-stroke plus a transparent fill would render the
+   titles invisible anywhere the property is unsupported. */
+@supports (-webkit-text-stroke: 1px currentColor) {
+  .rail__name {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--fg);
+  }
+
+  .rail__panel-btn:hover .rail__name,
+  .rail__panel-btn:focus-visible .rail__name {
+    -webkit-text-stroke-color: var(--art-accent);
+  }
+}
+
+.rail__panel-btn:hover .rail__name,
+.rail__panel-btn:focus-visible .rail__name {
+  color: var(--art-accent);
+}
+
+.rail__meta {
+  display: flex;
+  gap: var(--s-4);
+  color: var(--fg-faint);
+}
+
+.rail__meta-year {
+  color: var(--art-accent);
+}
+
+/* --- Progress ------------------------------------------------ */
+.rail__progress {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(3rem, 8vh, 5rem);
+  height: 1px;
+  background: var(--rule);
+}
+
+.rail__progress-bar {
+  display: block;
+  height: 100%;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+/* ============================================================
+   Static fallback (narrow screens / reduced motion)
+   ============================================================ */
+
+.rail--static {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--s-4) var(--gutter) var(--s-8);
+}
+
+.rail__static-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+
+.rail__static-item {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  grid-template-areas:
+    'n name go'
+    'n kind go';
+  column-gap: var(--s-3);
+  width: 100%;
+  padding-block: var(--s-4);
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  color: var(--fg);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.rail__static-n {
+  grid-area: n;
+  color: var(--art-accent);
+  align-self: center;
+}
+
+.rail__static-name {
+  grid-area: name;
+  font-size: clamp(1.7rem, 8vw, 2.6rem);
+  text-transform: uppercase;
+  line-height: 1;
+  font-variation-settings: 'wdth' 86, 'opsz' 40;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.rail__static-kind {
+  grid-area: kind;
+  color: var(--fg-faint);
+  margin-top: 0.35em;
+}
+
+.rail__static-go {
+  grid-area: go;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--tag-radius);
+  font-size: var(--t-sm);
+  color: var(--fg-faint);
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.rail__static-item:hover .rail__static-name,
+.rail__static-item:active .rail__static-name {
+  color: var(--art-accent);
+}
+
+.rail__static-item:hover .rail__static-go,
+.rail__static-item:active .rail__static-go {
+  color: var(--art-accent);
+  border-color: var(--art-accent);
+  transform: translateY(2px);
+}
+
+/* Phones: sized so the longest name, "soil monitoring system" (10.2em),
+   holds one line beside the index and the arrow. */
+@media (max-width: 600px) {
+  .rail__static-item {
+    padding-block: 0.9rem;
+  }
+  .rail__static-name {
+    font-size: calc((var(--measure) - 5.75rem) / 10.4);
+  }
+  .rail__static-kind {
+    font-size: var(--t-micro);
+  }
+}

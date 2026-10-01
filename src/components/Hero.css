@@ -1,0 +1,226 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: stretch;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: clip;
+}
+
+/* Engineering-paper grid. Very low contrast — texture, not pattern. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--rule-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+  background-size: clamp(48px, 7vw, 96px) clamp(48px, 7vw, 96px);
+  mask-image: radial-gradient(ellipse 85% 70% at 50% 45%, #000 20%, transparent 78%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-8);
+  width: 100%;
+  padding-block: clamp(4.75rem, 9vh, 6.5rem) clamp(1.75rem, 4vh, 3rem);
+}
+
+/* --- Top meta row -------------------------------------------- */
+.hero__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule);
+}
+
+.hero__meta-right {
+  color: var(--fg-faint);
+  text-align: right;
+}
+
+/* --- Statement ----------------------------------------------- */
+.hero__statement {
+  font-size: var(--t-mega);
+  margin-block: clamp(1.25rem, 2.4vw, 2.75rem);
+  will-change: transform, opacity;
+  font-variation-settings: 'wdth' 95, 'opsz' 96;
+}
+
+.hero__line {
+  display: block;
+  will-change: transform;
+}
+
+.hero__line[data-accent='true'] {
+  color: var(--accent);
+}
+
+/* --- Foot row ------------------------------------------------ */
+.hero__foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) auto;
+  align-items: end;
+  gap: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+}
+
+.hero__sub {
+  max-width: 42ch;
+  font-size: var(--t-md);
+  line-height: 1.38;
+  color: var(--fg-mute);
+  text-wrap: pretty;
+}
+
+.hero__status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+
+.hero__status-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  color: var(--fg-faint);
+}
+
+.hero__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: pulse 2.4s var(--ease-in-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.72);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__pulse {
+    animation: none;
+  }
+}
+
+/* --- Scroll cue ---------------------------------------------- */
+.hero__scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  justify-self: end;
+}
+
+.hero__scroll .mono {
+  color: var(--fg);
+  transition: color var(--dur-fast);
+}
+
+.hero__scroll-line {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 96px;
+  height: 1px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateX(-100%);
+  animation: sweep 2.6s var(--ease-in-out) infinite;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  55%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-line::after {
+    animation: none;
+    transform: translateX(0);
+    opacity: 0.4;
+  }
+}
+
+.hero__scroll:hover .hero__scroll-line::after {
+  animation-duration: 1.2s;
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 1080px) {
+  .hero__foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .hero__scroll {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero__grid {
+    padding-block: calc(var(--s-16) + var(--s-6)) var(--s-8);
+  }
+  .hero__foot {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: var(--s-6);
+  }
+  .hero__sub {
+    font-size: 1.08rem;
+    line-height: 1.45;
+  }
+  .hero__statement {
+    font-variation-settings: 'wdth' 100, 'opsz' 60;
+  }
+}
+
+/* Phones: the statement is the whole poster, so it runs edge to edge.
+   "i build things" needs 5.45em at this width axis — see tokens.css. */
+@media (max-width: 600px) {
+  .hero__grid {
+    gap: var(--s-6);
+  }
+  .hero__meta .mono {
+    font-size: var(--t-micro);
+  }
+  .hero__statement {
+    font-size: calc(var(--measure) / 5.62);
+    margin-block: auto;
+  }
+  .hero__foot {
+    gap: var(--s-4);
+    padding-top: var(--s-4);
+  }
+  .hero__scroll {
+    margin-top: var(--s-2);
+  }
+}

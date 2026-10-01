@@ -1,0 +1,39 @@
+/* Perched on the section's own divider rule (the thin line the
+   [07] DESK label opens with, sitting at the very top of this section —
+   the Positions → Desk seam). The crop's hip/lower-back line sits at
+   roughly 70% of the image's own height, so translateY(-70%) is what
+   actually rests that point on the rule rather than the image's edge. */
+.ledge-figure {
+  position: absolute;
+  top: 0;
+  right: clamp(8%, 13vw, 17%);
+  width: clamp(9rem, 15vw, 14rem);
+  transform: translateY(-70%);
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.3));
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ledge-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 760px) and (min-width: 601px) {
+  /* Too easily collides with section copy at these widths — a flourish,
+     not load-bearing content, so it's fine to drop. */
+  .ledge-figure {
+    display: none;
+  }
+}
+
+/* Phones: back, smaller, and tucked against the right gutter. Everything
+   above the rule is the previous section's bottom padding, and the one
+   thing below it on that side — the label's meta — is hidden in Desk.css. */
+@media (max-width: 600px) {
+  .ledge-figure {
+    right: var(--gutter);
+    width: clamp(6rem, 30vw, 8rem);
+  }
+}

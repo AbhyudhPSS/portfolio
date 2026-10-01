@@ -1,0 +1,138 @@
+.connect {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--section) clamp(3rem, 6vw, 5rem);
+}
+
+.connect__head {
+  font-size: var(--t-mega);
+  margin-bottom: clamp(2.5rem, 6vw, 5rem);
+  font-variation-settings: 'wdth' 92, 'opsz' 96;
+}
+
+.connect__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+.connect__body {
+  max-width: 34ch;
+  font-size: var(--t-md);
+  line-height: 1.45;
+  color: var(--fg-mute);
+}
+
+/* --- Links --------------------------------------------------- */
+.connect__links {
+  border-top: 1px solid var(--rule);
+}
+
+.connect__row {
+  border-bottom: 1px solid var(--rule);
+}
+
+.connect__link {
+  display: grid;
+  grid-template-columns: 8rem 1fr auto;
+  align-items: center;
+  gap: var(--s-4);
+  padding-block: clamp(1rem, 2vw, 1.5rem);
+  color: var(--fg);
+}
+
+.connect__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 2.3vw, 1.8rem);
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  font-variation-settings: 'wdth' 94, 'opsz' 28;
+}
+
+.connect__handle {
+  color: var(--fg-faint);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.connect__arrow {
+  font-size: 1.15rem;
+  color: var(--accent);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+a.connect__link:hover .connect__arrow {
+  transform: translate(3px, -3px);
+}
+
+a.connect__link:hover .connect__label {
+  color: var(--accent);
+}
+
+/* Unresolved link: visibly pending, never a fabricated URL. */
+.connect__link--todo {
+  cursor: default;
+  color: var(--fg-faint);
+}
+
+.connect__link--todo .connect__label {
+  color: var(--fg-faint);
+}
+
+.connect__pending {
+  padding: 0.25em 0.75em 0.3em;
+  border: 1px dashed var(--rule);
+  border-radius: var(--tag-radius);
+  color: var(--fg-faint);
+  font-size: var(--t-micro);
+  white-space: nowrap;
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 900px) {
+  .connect__cols {
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+  }
+  .connect__link {
+    grid-template-columns: 1fr auto;
+    row-gap: 0.2em;
+  }
+  .connect__handle {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .connect__arrow,
+  .connect__pending {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+/* Phones: "have something" needs 6em, so the sign-off runs the full measure. */
+@media (max-width: 600px) {
+  .connect__head {
+    font-size: calc(var(--measure) / 6.2);
+    margin-bottom: var(--s-8);
+  }
+  .connect__body {
+    font-size: 1.15rem;
+  }
+  .connect__link {
+    padding-block: 1.1rem;
+  }
+  .connect__label {
+    font-size: 1.45rem;
+  }
+  .connect__arrow {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--tag-radius);
+    font-size: 1rem;
+  }
+}

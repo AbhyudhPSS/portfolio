@@ -1,0 +1,89 @@
+.beliefs {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--section);
+}
+
+.beliefs__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.beliefs__item {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1.25fr) minmax(0, 0.75fr);
+  align-items: start;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(2.2rem, 5vw, 4rem);
+  border-top: 1px solid var(--rule);
+}
+
+.beliefs__item:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.beliefs__n {
+  color: var(--accent);
+  padding-top: 0.6em;
+}
+
+.beliefs__head {
+  font-size: clamp(1.9rem, 4.6vw, 3.9rem);
+  text-transform: none;
+  font-variation-settings: 'wdth' 92, 'opsz' 60;
+}
+
+.beliefs__body {
+  max-width: 40ch;
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--fg-mute);
+  padding-top: 0.55em;
+}
+
+@media (max-width: 900px) {
+  .beliefs__item {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--s-4);
+  }
+  .beliefs__body {
+    grid-column: 2;
+    max-width: none;
+    padding-top: var(--s-3);
+  }
+  .beliefs__n {
+    padding-top: 0.4em;
+  }
+}
+
+/* Phones: a 2.5rem column for a two-digit index cost the heading an eighth
+   of its width. The index sits above instead, as a short ruled lead-in, and
+   the heading is sized so "I have not understood it." (9.5em) fills a line. */
+@media (max-width: 600px) {
+  .beliefs__item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-4);
+    padding-block: var(--s-8) var(--s-12);
+  }
+  .beliefs__n {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding-top: 0;
+  }
+  .beliefs__n::after {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+  .beliefs__head {
+    font-size: calc(var(--measure) / 10);
+  }
+  .beliefs__body {
+    grid-column: 1;
+    padding-top: 0;
+    font-size: 0.95rem;
+  }
+}

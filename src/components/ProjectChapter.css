@@ -1,0 +1,271 @@
+.chapter {
+  position: relative;
+  padding-block: clamp(4.5rem, 10vw, 10rem);
+  border-top: 1px solid var(--rule);
+}
+
+.chapter:first-of-type {
+  border-top: none;
+}
+
+.chapter__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* --- Identity column ----------------------------------------- */
+.chapter__id {
+  position: sticky;
+  top: clamp(5rem, 12vh, 8rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.chapter__number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(4.5rem, 11vw, 10rem);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: var(--art-accent, var(--accent));
+  opacity: 0.9;
+  will-change: transform;
+  font-variation-settings: 'wdth' 80, 'opsz' 96;
+}
+
+.chapter__name {
+  font-size: clamp(1.6rem, 3.1vw, 2.6rem);
+  color: var(--fg);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'wdth' 88, 'opsz' 36;
+}
+
+.chapter__kind {
+  color: var(--fg-faint);
+}
+
+.chapter__vitals {
+  display: flex;
+  gap: var(--s-8);
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+}
+
+.chapter__vitals dt {
+  color: var(--fg-faint);
+  margin-bottom: 0.3em;
+}
+
+.chapter__vitals dd {
+  color: var(--fg);
+}
+
+.chapter__status {
+  color: var(--art-accent, var(--accent));
+}
+
+.chapter__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  width: fit-content;
+  margin-top: var(--s-6);
+  padding: 0.6em 1.1em;
+  border: 1px solid var(--rule);
+  border-radius: var(--tag-radius);
+  color: var(--fg);
+  transition: border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out), gap var(--dur-fast) var(--ease-out);
+}
+
+.chapter__link:hover {
+  border-color: var(--art-accent, var(--accent));
+  color: var(--art-accent, var(--accent));
+  gap: 0.7em;
+}
+
+/* --- Content column ------------------------------------------ */
+.chapter__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  min-width: 0;
+}
+
+.chapter__thesis {
+  font-size: var(--t-lg);
+  color: var(--fg);
+  max-width: 22ch;
+  text-transform: none;
+  font-variation-settings: 'wdth' 96, 'opsz' 48;
+}
+
+/* --- Artifact plate ------------------------------------------ */
+.chapter__art {
+  position: relative;
+  padding: clamp(1rem, 2.6vw, 2.2rem);
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  color: var(--fg);
+  will-change: transform;
+  overflow: hidden;
+}
+
+/* Faint tint from the project's own accent. */
+.chapter__art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 78% 12%,
+    color-mix(in srgb, var(--art-accent) 13%, transparent),
+    transparent 62%
+  );
+  pointer-events: none;
+}
+
+/* --- Prose --------------------------------------------------- */
+.chapter__prose p {
+  max-width: 64ch;
+  font-size: var(--t-body);
+  line-height: var(--lead-body);
+  color: var(--fg-mute);
+}
+
+/* --- Facts --------------------------------------------------- */
+.chapter__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.chapter__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  padding: var(--s-4) var(--s-4) var(--s-4) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  height: 100%;
+}
+
+.chapter__fact-k {
+  color: var(--fg-faint);
+}
+
+.chapter__fact-v {
+  font-size: var(--t-sm);
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+/* --- Stack chips --------------------------------------------- */
+.chapter__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.chapter__chip {
+  border-color: var(--rule);
+  color: var(--fg-mute);
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.chapter__chip:hover {
+  color: var(--art-accent, var(--accent));
+  border-color: var(--art-accent, var(--accent));
+}
+
+/* --- Honest note --------------------------------------------- */
+.chapter__note {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7em;
+  max-width: 60ch;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  color: var(--fg-faint);
+}
+
+.chapter__note-mark {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  transform: translateY(-1px);
+  border-radius: 999px 999px 999px 1px;
+  background: var(--art-accent, var(--accent));
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 1000px) {
+  .chapter__grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+  }
+  .chapter__id {
+    position: static;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'num name'
+      'num kind'
+      'vit vit';
+    align-items: center;
+    column-gap: var(--s-4);
+    row-gap: 0.2em;
+  }
+  .chapter__number {
+    grid-area: num;
+    font-size: clamp(3.4rem, 15vw, 5.5rem);
+  }
+  .chapter__name {
+    grid-area: name;
+    align-self: end;
+  }
+  .chapter__kind {
+    grid-area: kind;
+    align-self: start;
+  }
+  .chapter__vitals {
+    grid-area: vit;
+  }
+}
+
+@media (max-width: 600px) {
+  .chapter {
+    padding-block: var(--s-16);
+  }
+  .chapter__grid {
+    gap: var(--s-6);
+  }
+  .chapter__body {
+    gap: var(--s-8);
+  }
+  /* Lines are pre-balanced to fit the column (ProjectChapter.tsx), so a ch
+     cap here would only break them a second time. */
+  .chapter__thesis {
+    max-width: none;
+  }
+  /* The drawing is the point of the plate; on a phone the padding was
+     costing it a tenth of its width. */
+  .chapter__art {
+    padding: var(--s-2);
+  }
+  .chapter__facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .chapter__fact {
+    padding-right: var(--s-3);
+  }
+}

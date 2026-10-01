@@ -1,0 +1,91 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  pointer-events: none;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.cursor[data-visible='true'] {
+  opacity: 1;
+}
+
+.cursor__ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  transition: width 280ms var(--ease-out), height 280ms var(--ease-out),
+    margin 280ms var(--ease-out), background-color 280ms var(--ease-out),
+    border-color 280ms var(--ease-out);
+}
+
+.cursor[data-surface='void'] .cursor__ring {
+  border-color: var(--chalk);
+}
+
+/* Link: contract to a filled dot. */
+.cursor[data-mode='link'] .cursor__ring {
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: var(--signal);
+  border-color: var(--signal);
+}
+
+.cursor[data-surface='void'][data-mode='link'] .cursor__ring {
+  background: var(--acid);
+  border-color: var(--acid);
+}
+
+/* View: expand into a labelled disc. */
+.cursor[data-mode='view'] .cursor__ring {
+  width: 74px;
+  height: 74px;
+  margin: -37px 0 0 -37px;
+  background: var(--signal);
+  border-color: var(--signal);
+}
+
+.cursor[data-surface='void'][data-mode='view'] .cursor__ring {
+  background: var(--acid);
+  border-color: var(--acid);
+}
+
+.cursor__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out), transform 280ms var(--ease-out);
+}
+
+.cursor[data-surface='void'] .cursor__label {
+  color: var(--void);
+}
+
+.cursor[data-mode='view'] .cursor__label {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Hide entirely where a custom cursor is inappropriate. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor {
+    display: none;
+  }
+}

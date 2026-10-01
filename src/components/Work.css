@@ -1,0 +1,15 @@
+.work {
+  position: relative;
+  background: var(--bg);
+  color: var(--fg);
+  padding-top: var(--section);
+  padding-bottom: clamp(3rem, 7vw, 7rem);
+}
+
+.work .shell .section-label-wrap {
+  margin-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+.work__chapters {
+  margin-top: clamp(2rem, 5vw, 5rem);
+}

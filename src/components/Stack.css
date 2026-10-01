@@ -1,0 +1,229 @@
+.stack {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--section) clamp(3rem, 6vw, 6rem);
+}
+
+.stack__head {
+  font-size: var(--t-xl);
+  max-width: 14ch;
+  margin-bottom: clamp(3rem, 7vw, 6rem);
+  font-variation-settings: 'wdth' 92, 'opsz' 72;
+}
+
+.stack__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* --- Domain list --------------------------------------------- */
+.stack__groups {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: clamp(5rem, 12vh, 8rem);
+}
+
+.stack__group {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--s-4);
+  width: 100%;
+  padding-block: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+  text-align: left;
+  color: var(--fg-mute);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.stack__group-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack__group-list > :last-child .stack__group {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.stack__group:hover,
+.stack__group[data-active='true'] {
+  color: var(--fg);
+}
+
+.stack__group-n {
+  color: var(--fg-faint);
+  transition: color var(--dur-fast);
+}
+
+.stack__group[data-active='true'] .stack__group-n {
+  color: var(--accent-text);
+}
+
+.stack__group-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  font-variation-settings: 'wdth' 94, 'opsz' 24;
+}
+
+.stack__group-count {
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.stack__note {
+  margin-top: var(--s-6);
+  min-height: 3em;
+  max-width: 28ch;
+  color: var(--fg-faint);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+/* --- Field --------------------------------------------------- */
+.stack__field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  align-content: flex-start;
+}
+
+.stack__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.5em 1.05em 0.55em;
+  border: 1px solid var(--rule);
+  border-radius: var(--tag-radius);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.02em;
+  color: var(--fg);
+  transition: opacity 320ms var(--ease-out), border-color 320ms var(--ease-out),
+    color 320ms var(--ease-out), transform 320ms var(--ease-out);
+}
+
+.stack__item-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--fg-faint);
+  transition: background-color 320ms var(--ease-out), transform 320ms var(--ease-out);
+}
+
+/* Resolved state */
+.stack__field[data-filtering='true'] .stack__item[data-on='false'] {
+  opacity: 0.22;
+  color: var(--fg-faint);
+}
+
+.stack__field[data-filtering='true'] .stack__item[data-on='true'] {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+  transform: translateY(-2px);
+}
+
+.stack__field[data-filtering='true'] .stack__item[data-on='true'] .stack__item-dot {
+  background: var(--accent);
+  transform: scale(1.4);
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 900px) {
+  .stack__layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-8);
+  }
+  .stack__groups {
+    position: static;
+  }
+  .stack__head {
+    max-width: 12ch;
+  }
+  .stack__note {
+    min-height: 0;
+  }
+}
+
+/* Phones: the domain list stacked five rows above a field that runs for
+   several screens, so a tap resolved chips nowhere near the thumb. The
+   domains become one swipeable row of pills sitting directly on the field,
+   and the field filters rather than dims — what a domain resolves to is
+   right there, not scattered through 42 chips. */
+@media (max-width: 760px) {
+  .stack__layout {
+    gap: var(--s-6);
+  }
+  .stack__group-list {
+    flex-direction: row;
+    gap: var(--s-2);
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 3px var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .stack__group-list::-webkit-scrollbar {
+    display: none;
+  }
+  .stack__group-list > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .stack__group,
+  .stack__group-list > :last-child .stack__group {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    width: auto;
+    padding: 0.4em 0.95em 0.5em;
+    border: 1px solid var(--rule);
+    border-radius: var(--tag-radius);
+    color: var(--fg);
+    transition: color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .stack__group[data-active='true'] {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+  }
+  .stack__group-n {
+    display: none;
+  }
+  .stack__group-name {
+    font-size: 1rem;
+  }
+  .stack__group-count {
+    font-size: var(--t-micro);
+  }
+  .stack__group[data-active='true'] .stack__group-count {
+    color: inherit;
+    opacity: 0.6;
+  }
+  .stack__note {
+    margin-top: var(--s-4);
+    max-width: none;
+  }
+  .stack__field[data-filtering='true'] .stack__item[data-on='false'] {
+    display: none;
+  }
+  .stack__field[data-filtering='true'] .stack__item[data-on='true'] {
+    transform: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .stack__head {
+    max-width: none;
+  }
+}

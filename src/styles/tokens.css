@@ -1,0 +1,148 @@
+/* ============================================================
+   DESIGN TOKENS
+   One paper surface, one void surface, two accents. Nothing else.
+   ============================================================ */
+
+:root {
+  /* --- Surface ------------------------------------------------ */
+  --paper: #f1ede5;
+  --paper-2: #e8e2d7;
+  --void: #131211;
+  --void-2: #1d1b19;
+
+  /* --- Ink ---------------------------------------------------- */
+  --ink: #11100e;
+  --ink-70: rgba(17, 16, 14, 0.7);
+  --ink-45: rgba(17, 16, 14, 0.62);
+  --ink-20: rgba(17, 16, 14, 0.2);
+  --ink-10: rgba(17, 16, 14, 0.1);
+
+  --chalk: #f1ede5;
+  --chalk-60: rgba(241, 237, 229, 0.6);
+  --chalk-35: rgba(241, 237, 229, 0.56);
+  --chalk-15: rgba(241, 237, 229, 0.15);
+
+  /* --- Accent ------------------------------------------------- */
+  --signal: #e2481c; /* vermilion — display sizes and non-text marks */
+  --signal-ink: #bf3a12; /* small accent text on paper (AA at 4.8:1) */
+  --signal-light: #f0733c; /* lighter orange for dark surfaces (matches project chapter accents) */
+  --acid: #c8f751; /* void surface only */
+
+  /* --- Semantic (flipped by [data-surface]) ------------------- */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-mute: var(--ink-70);
+  --fg-faint: var(--ink-45);
+  --rule: var(--ink-20);
+  --rule-soft: var(--ink-10);
+  --accent: var(--signal);
+  --accent-text: var(--signal-ink);
+
+  /* --- Type --------------------------------------------------- */
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Fluid scale. Display leads below 1.0 — the signature move. */
+  --t-mega: clamp(3.2rem, 10.6vw, 10rem);
+  --t-xl: clamp(2.5rem, 7.5vw, 6.5rem);
+  --t-lg: clamp(1.9rem, 4.4vw, 3.6rem);
+  --t-md: clamp(1.3rem, 2.3vw, 1.85rem);
+  --t-body: clamp(1rem, 1.05vw, 1.1rem);
+  --t-sm: 0.875rem;
+  --t-xs: 0.75rem;
+  /* Was 0.66rem. Uppercase mono at 0.1em tracking is already working against
+     the reader; 10.5px of it on a phone is below what anyone should have to
+     squint at. Contrast was never the problem here, size was. */
+  --t-micro: 0.7rem;
+
+  --lead-display: 0.84;
+  --lead-tight: 1.05;
+  --lead-body: 1.55;
+  --track-display: -0.035em;
+  --track-mono: 0.1em;
+
+  /* --- Space -------------------------------------------------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-12: 3rem;
+  --s-16: 4rem;
+  --s-24: 6rem;
+  --s-32: 8rem;
+  --section: clamp(5rem, 11vw, 11rem);
+  --gutter: clamp(1.15rem, 4.2vw, 4.5rem);
+  --maxw: 1560px;
+  /* The width of one full column of text inside .shell. Phone type is sized
+     against this rather than the viewport — see the breakpoint below. */
+  --measure: calc(min(100vw, var(--maxw)) - 2 * var(--gutter));
+
+  /* --- Shape -------------------------------------------------- */
+  /* Signature: pill with one squared corner — a "tag" shape. */
+  --tag-radius: 999px 999px 999px 4px;
+  --r-sm: 4px;
+  --r-md: 10px;
+
+  /* --- Motion ------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 180ms;
+  --dur: 420ms;
+  --dur-slow: 800ms;
+
+  --cursor-visible: 0;
+}
+
+/* Void surface: invert the semantic layer, swap accent. */
+[data-surface='void'] {
+  --bg: var(--void);
+  --fg: var(--chalk);
+  --fg-mute: var(--chalk-60);
+  --fg-faint: var(--chalk-35);
+  --rule: var(--chalk-15);
+  --rule-soft: rgba(241, 237, 229, 0.08);
+  --accent: var(--acid);
+  --accent-text: var(--acid);
+  color-scheme: dark;
+}
+
+[data-surface='paper'] {
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-mute: var(--ink-70);
+  --fg-faint: var(--ink-45);
+  --rule: var(--ink-20);
+  --rule-soft: var(--ink-10);
+  --accent: var(--signal);
+  --accent-text: var(--signal-ink);
+  color-scheme: light;
+}
+
+/* Phones. Below ~530px every vw term in the scale above loses to its rem
+   floor, so a 360px phone and a 430px phone got identical, undersized
+   headlines that stopped well short of the right edge.
+
+   Here display type is sized against the measure instead: the column width
+   divided by how many em its longest line needs. Because the ratio is fixed,
+   a headline fills the same share of the column at every phone width. The
+   divisors are measured from the real lines, with ~4% left over so a
+   slightly wider fallback face wraps rather than clips. --t-xl is set by
+   "formal recognition," (7.4em), the longest section headline. */
+@media (max-width: 600px) {
+  :root {
+    --t-xl: min(calc(var(--measure) / 7.7), 3.6rem);
+    --t-lg: min(calc(var(--measure) / 10.8), 2.4rem);
+    --section: 4.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur: 1ms;
+    --dur-slow: 1ms;
+  }
+}

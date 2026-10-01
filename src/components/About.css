@@ -1,0 +1,214 @@
+.about {
+  background: var(--bg);
+  color: var(--fg);
+  padding-block: var(--section);
+}
+
+.section-label-wrap {
+  margin-bottom: clamp(2.25rem, 4.5vw, 4.5rem);
+}
+
+/* --- Lede ---------------------------------------------------- */
+.about__lede {
+  font-size: var(--t-xl);
+  max-width: 16ch;
+  margin-bottom: clamp(3rem, 8vw, 8rem);
+  font-variation-settings: 'wdth' 92, 'opsz' 72;
+}
+
+/* --- Two-column body ----------------------------------------- */
+.about__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.about__rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  position: sticky;
+  top: calc(var(--s-16) + var(--s-4));
+}
+
+.about__portrait-wrap {
+  margin-bottom: var(--s-2);
+}
+
+.about__rail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  padding-block: var(--s-3);
+  border-top: 1px solid var(--rule-soft);
+}
+
+.about__rail-row dt {
+  color: var(--fg-faint);
+}
+
+.about__rail-row dd {
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--fg);
+}
+
+/* --- Paragraphs ---------------------------------------------- */
+.about__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.6rem, 3vw, 2.6rem);
+  max-width: 62ch;
+}
+
+.about__opening {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--t-md);
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--rule-soft);
+  font-variation-settings: 'wdth' 100, 'opsz' 24;
+}
+
+.about__para-wrap {
+  position: relative;
+}
+
+.about__para {
+  font-size: var(--t-body);
+  line-height: var(--lead-body);
+  color: var(--fg-mute);
+}
+
+/* Marginalia — sits in the right gutter on wide screens. */
+.about__note {
+  position: absolute;
+  top: 0.15em;
+  left: calc(100% + 2.6rem);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  width: 12rem;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--accent-text);
+  transform: rotate(-1.4deg);
+  transform-origin: left center;
+}
+
+/* Pinned to the first line of the note, not its middle — a note that wraps
+   to three lines otherwise has its leader pointing at nothing. */
+.about__note-leader {
+  width: 1.15rem;
+  height: 1px;
+  margin-top: 0.75em;
+  flex-shrink: 0;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+/* --- Curious ------------------------------------------------- */
+.about__curious {
+  margin-top: clamp(3rem, 6vw, 6rem);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--rule);
+}
+
+.about__curious-head {
+  color: var(--fg-faint);
+  margin-bottom: var(--s-6);
+}
+
+.about__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+
+.about__tag {
+  font-size: var(--t-xs);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  padding: 0.45em 1em 0.5em;
+  color: var(--fg);
+  transition: border-color var(--dur-fast), color var(--dur-fast),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.about__tag:hover {
+  border-color: var(--accent-text);
+  color: var(--accent-text);
+  transform: translateY(-2px);
+}
+
+.about__tag-i {
+  color: var(--fg-faint);
+  font-size: var(--t-micro);
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 1400px) {
+  /* No room for true marginalia — inline it under the paragraph. */
+  .about__note {
+    position: static;
+    width: auto;
+    margin-top: var(--s-3);
+    max-width: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 880px) {
+  .about__cols {
+    grid-template-columns: 1fr;
+    gap: var(--s-12);
+  }
+  .about__rail {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0 var(--s-6);
+  }
+  /* The lines are already broken by hand, so a ch cap here only forced a
+     second, worse break ("by breaking / them"). */
+  .about__lede {
+    max-width: none;
+  }
+}
+
+/* Phones: the portrait and its details sit side by side, like a caption
+   beside a plate, instead of the portrait taking one cell of a grid meant
+   for short text. */
+@media (max-width: 600px) {
+  .about__cols {
+    gap: var(--s-12);
+  }
+  .about__rail {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 0 var(--s-4);
+  }
+  .about__portrait-wrap {
+    grid-column: 1;
+    grid-row: 1 / span 5;
+    margin-bottom: 0;
+  }
+  .about__rail > :not(.about__portrait-wrap) {
+    grid-column: 2;
+  }
+  .about__rail > :nth-child(2) .about__rail-row {
+    padding-top: 0;
+    border-top: none;
+  }
+  .about__rail-row {
+    padding-block: var(--s-2) var(--s-3);
+  }
+  .about__note {
+    margin-top: var(--s-4);
+  }
+}

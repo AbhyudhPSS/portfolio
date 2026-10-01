@@ -1,0 +1,10 @@
+{
+  "name": "Abhyudh Solanki",
+  "short_name": "Abhyudh",
+  "description": "A young builder working at the intersection of AI, product, robotics and design.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#131211",
+  "theme_color": "#131211",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

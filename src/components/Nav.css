@@ -1,0 +1,274 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 90;
+  will-change: transform;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--s-4) var(--gutter);
+  color: var(--fg);
+  pointer-events: auto;
+  transition: color 500ms var(--ease-in-out);
+}
+
+/* --- Wordmark ------------------------------------------------ */
+.nav__mark {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.nav__mark-glyph {
+  width: 0.62em;
+  height: 0.62em;
+  background: var(--accent);
+  border-radius: 999px 999px 999px 2px;
+  transition: transform var(--dur) var(--ease-out), background-color 500ms;
+}
+
+.nav__mark:hover .nav__mark-glyph {
+  transform: rotate(135deg) scale(1.15);
+}
+
+/* --- Links --------------------------------------------------- */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.4vw, 1.4rem);
+  margin-inline: auto;
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.45em 0.15em;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav__link:hover,
+.nav__link[data-active='true'] {
+  color: var(--fg);
+}
+
+.nav__link-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.nav__link[data-active='true'] .nav__link-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- Aside: clock, sound, burger ----------------------------- */
+.nav__aside {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav__clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: var(--t-micro);
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+
+.nav__clock-sep {
+  opacity: 0.45;
+}
+
+.nav__clock-tz {
+  color: var(--accent-text);
+}
+
+/* Sound toggle — an equaliser that only moves when sound is on. */
+.nav__sound {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  transition: border-color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.nav__sound:hover {
+  border-color: var(--fg);
+}
+
+.nav__eq {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 11px;
+}
+
+.nav__eq i {
+  display: block;
+  width: 1.5px;
+  height: 3px;
+  background: var(--fg-faint);
+  transition: background-color var(--dur-fast);
+}
+
+.nav__eq[data-on='true'] i {
+  background: var(--accent);
+  animation: eq 900ms var(--ease-in-out) infinite alternate;
+}
+
+.nav__eq[data-on='true'] i:nth-child(2) {
+  animation-delay: 140ms;
+}
+.nav__eq[data-on='true'] i:nth-child(3) {
+  animation-delay: 300ms;
+}
+.nav__eq[data-on='true'] i:nth-child(4) {
+  animation-delay: 80ms;
+}
+
+@keyframes eq {
+  from {
+    height: 3px;
+  }
+  to {
+    height: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__eq[data-on='true'] i {
+    animation: none;
+    height: 8px;
+  }
+}
+
+/* --- Burger -------------------------------------------------- */
+.nav__burger {
+  display: none;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+}
+
+.nav__burger-box {
+  position: relative;
+  display: block;
+  width: 17px;
+  height: 11px;
+}
+
+.nav__burger-box i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--fg);
+  transition: transform var(--dur) var(--ease-out), top var(--dur) var(--ease-out);
+}
+
+.nav__burger-box i:first-child {
+  top: 0;
+}
+.nav__burger-box i:last-child {
+  top: 9px;
+}
+
+.nav__burger-box[data-open='true'] i:first-child {
+  top: 5px;
+  transform: rotate(45deg);
+}
+.nav__burger-box[data-open='true'] i:last-child {
+  top: 5px;
+  transform: rotate(-45deg);
+}
+
+/* --- Mobile menu --------------------------------------------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--s-8);
+  padding: calc(var(--s-24) + var(--s-8)) var(--gutter) var(--s-12);
+  background: var(--bg);
+  color: var(--fg);
+  will-change: clip-path;
+}
+
+.menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+}
+
+.menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  width: 100%;
+  font-size: clamp(2.6rem, 16.5vw, 5rem);
+  color: var(--fg);
+  text-align: left;
+}
+
+.menu__n {
+  font-size: var(--t-micro);
+  color: var(--accent);
+  transform: translateY(-0.9em);
+}
+
+.menu__foot {
+  color: var(--fg-faint);
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s-4);
+}
+
+/* --- Breakpoints --------------------------------------------- */
+@media (max-width: 900px) {
+  .nav__links,
+  .nav__clock {
+    display: none;
+  }
+  .nav__burger {
+    display: grid;
+  }
+  .nav__inner {
+    padding-block: var(--s-3);
+  }
+}

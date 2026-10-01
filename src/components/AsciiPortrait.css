@@ -1,0 +1,198 @@
+/* A terminal window: title bar, a `cat` prompt, the character grid as its
+   output, and a fresh prompt with a blinking caret underneath. Always dark
+   (even on the paper surface), so it uses the raw void/chalk tokens rather
+   than the surface-flipping --bg/--fg semantics. */
+.portrait {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--void);
+  border: 1px solid var(--ink-20);
+  box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.55);
+  /* The window can land in a very narrow column on phones — text scales
+     with the window itself (cqi), not the viewport, so nothing clips. */
+  container-type: inline-size;
+}
+
+.portrait__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 0.6rem var(--s-3);
+  background: var(--void-2);
+  border-bottom: 1px solid var(--chalk-15);
+}
+
+.portrait__lights {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.portrait__lights i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--chalk-15);
+}
+
+.portrait__lights i:first-child {
+  background: var(--signal-light);
+}
+
+.portrait__title {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(0.5rem, 4.3cqi, var(--t-micro));
+  letter-spacing: 0.04em;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--chalk-35);
+}
+
+/* Wide enough to centre the title against the lights' width. */
+@container (min-width: 200px) {
+  .portrait__title {
+    text-align: center;
+    padding-right: calc(36px + var(--s-3));
+  }
+}
+
+.portrait__screen {
+  position: relative;
+  overflow: hidden;
+  padding: var(--s-3) var(--s-3) var(--s-3);
+}
+
+.portrait__line {
+  font-size: clamp(0.5rem, 4.3cqi, var(--t-micro));
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--chalk-60);
+  white-space: nowrap;
+}
+
+.portrait__prompt {
+  color: var(--acid);
+  margin-right: 0.6em;
+}
+
+.portrait__frame {
+  aspect-ratio: 4 / 5;
+  margin-block: var(--s-2);
+}
+
+.portrait canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.portrait__caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  vertical-align: text-bottom;
+  background: var(--acid);
+  animation: portraitCaret 1.1s steps(1) infinite;
+}
+
+@keyframes portraitCaret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* A slow scanline pass over the screen — signals "generated", not
+   "photograph". */
+.portrait__screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(200, 247, 81, 0.09) 48%,
+    transparent 100%
+  );
+  transform: translateY(-100%);
+  animation: portraitScan 7s var(--ease-in-out) infinite;
+}
+
+@keyframes portraitScan {
+  0%,
+  15% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait__screen::after {
+    display: none;
+  }
+  .portrait__caret {
+    animation: none;
+  }
+  .portrait canvas {
+    transition: none;
+  }
+}
+
+/* --- Pose dots -------------------------------------------------------- */
+.portrait__dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.portrait__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--rule);
+  transition: background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.portrait__dot:hover {
+  background: var(--fg-faint);
+}
+
+.portrait__dot[data-active='true'] {
+  background: var(--accent-text);
+  transform: scale(1.3);
+}
+
+/* --- Empty state: honest placeholder, not a fabricated image ---------- */
+.portrait--empty {
+  aspect-ratio: 4 / 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+  border-style: dashed;
+  color: var(--fg-faint);
+}
+
+.portrait__empty-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+}

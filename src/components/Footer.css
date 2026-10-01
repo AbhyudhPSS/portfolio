@@ -1,0 +1,83 @@
+.footer {
+  background: var(--bg);
+  color: var(--fg);
+  padding-bottom: var(--s-8);
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-top: var(--s-8);
+  border-top: 1px solid var(--rule);
+}
+
+/* --- Brand --------------------------------------------------- */
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.footer__name {
+  font-size: clamp(2.2rem, 9vw, 7rem);
+  line-height: 0.88;
+  font-variation-settings: 'wdth' 86, 'opsz' 96;
+}
+
+.footer__role {
+  color: var(--fg-faint);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  max-width: 50ch;
+}
+
+/* --- Colophon ------------------------------------------------ */
+.footer__cols {
+  display: flex;
+}
+
+.footer__cols > div {
+  width: max-content;
+}
+
+.footer__cols dt {
+  color: var(--fg-faint);
+  margin-bottom: 0.4em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.footer__cols dd {
+  color: var(--fg-mute);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+}
+
+/* --- Base ---------------------------------------------------- */
+.footer__base {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule-soft);
+  color: var(--fg-faint);
+}
+
+.footer__top {
+  color: var(--fg-faint);
+  transition: color var(--dur-fast);
+}
+
+.footer__top:hover {
+  color: var(--accent-text);
+}
+
+/* Phones: the name closes the page at full measure (5.7em for the line). */
+@media (max-width: 600px) {
+  .footer__name {
+    font-size: calc(var(--measure) / 5.95);
+  }
+}

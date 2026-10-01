@@ -1,0 +1,272 @@
+/* ============================================================
+   BASE / RESET
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: auto; /* Lenis owns scrolling */
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: var(--lead-body);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 600ms var(--ease-in-out),
+    color 600ms var(--ease-in-out);
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  font-size: inherit;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* --- Focus: always visible, never removed ------------------- */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --- Utility ------------------------------------------------ */
+
+/**
+ * Pointer/touch target expansion.
+ *
+ * Several controls here are a single line of 11px mono by design — a bare
+ * arrow, a back-to-top, a wordmark. WCAG 2.2 (2.5.8, AA) asks for 24x24 CSS
+ * pixels of target, and a thumb asks for rather more. Growing the box would
+ * change the layout, so the target is grown instead: a centred, transparent
+ * pseudo-element that catches the press without occupying any space.
+ *
+ * `.hit` meets the 24px minimum and is safe inside flowing text.
+ * `.hit-lg` goes to 44px, for standalone controls with room around them.
+ */
+.hit,
+.hit-lg {
+  position: relative;
+}
+
+.hit::after,
+.hit-lg::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: max(100%, var(--hit, 24px));
+  height: max(100%, var(--hit, 24px));
+}
+
+.hit-lg {
+  --hit: 44px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-4);
+  left: var(--s-4);
+  z-index: 200;
+  padding: var(--s-3) var(--s-6);
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  border-radius: var(--r-sm);
+  transform: translateY(-160%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* The skip target is programmatically focused, never tabbed to, so it must
+   not paint a focus ring of its own. */
+#main:focus {
+  outline: none;
+}
+
+/* --- Shared primitives -------------------------------------- */
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  font-weight: 500;
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  font-feature-settings: 'tnum';
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: var(--lead-display);
+  letter-spacing: var(--track-display);
+  text-transform: lowercase;
+  font-variation-settings: 'wdth' 100, 'opsz' 48;
+}
+
+/* Section label: rule + number + name */
+.section-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: var(--s-4);
+  margin-bottom: 0;
+}
+
+.section-label__n {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mono);
+  color: var(--accent-text);
+}
+
+.section-label__name {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.section-label__meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* Tag chip — the signature one-square-corner shape */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0.3em 0.85em 0.35em;
+  border: 1px solid var(--rule);
+  border-radius: var(--tag-radius);
+  font-family: var(--font-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  white-space: nowrap;
+}
+
+/* Masked line reveal wrapper.
+   The display leading is below 1.0, so descenders sit outside the line box.
+   Pad the clip box down and pull it back with margin: the mask gets taller
+   without changing layout. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.26em;
+  margin-bottom: -0.26em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

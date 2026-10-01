@@ -1,0 +1,279 @@
+/* ============================================================
+   Project artifacts — shared drawing language.
+   Colours come from the parent chapter via --art-accent / currentColor.
+   ============================================================ */
+
+.art {
+  --art-fs: 11px;
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+  font-family: var(--font-mono);
+}
+
+/* The SVG renders at roughly half scale on a phone, so 11px user units would
+   land at ~5px on screen. Scale the type with the viewport instead. */
+@media (max-width: 900px) {
+  .art {
+    --art-fs: 15px;
+  }
+}
+
+@media (max-width: 620px) {
+  .art {
+    --art-fs: 20px;
+  }
+  /* Footnote labels have no room once the primary type grows. */
+  .art-label--dim {
+    display: none;
+  }
+}
+
+.art-plate {
+  fill: none;
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+/* --- Strokes & fills ----------------------------------------- */
+.art-stroke {
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0.55;
+  fill: none;
+}
+
+.art-stroke-accent {
+  stroke: var(--art-accent, var(--accent));
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.art-fill-ink {
+  fill: currentColor;
+}
+
+.art-fill-accent {
+  fill: var(--art-accent, var(--accent));
+}
+
+.art-fill-bg {
+  fill: var(--bg);
+}
+
+.art-fill-soft {
+  fill: currentColor;
+  opacity: 0.045;
+}
+
+.art-dash {
+  stroke-dasharray: 5 5;
+}
+
+/* --- Text ---------------------------------------------------- */
+.art-label {
+  font-size: var(--art-fs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  fill: currentColor;
+  opacity: 0.5;
+}
+
+.art-label--node {
+  opacity: 0.85;
+  letter-spacing: 0.06em;
+}
+
+.art-label--dim {
+  opacity: 0.35;
+}
+
+.art-num {
+  font-size: var(--art-fs);
+  letter-spacing: 0.06em;
+  fill: var(--art-accent, var(--accent));
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Animation. Everything is gated on .is-live, which the chapter
+   adds only once the artifact is actually on screen — nothing
+   animates off-screen.
+   ============================================================ */
+
+.art-fade {
+  opacity: 0;
+}
+
+.art-draw {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+}
+
+.is-live .art-fade {
+  animation: artFade 700ms var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+
+.is-live .art-draw {
+  animation: artDraw 1.4s var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+
+.is-live .art-draw--slow {
+  animation-duration: 2s;
+}
+
+@keyframes artFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes artDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Pulsing rings (Mangal, Lumo) */
+.art-ring {
+  opacity: 0;
+  transform-origin: center;
+}
+
+.is-live .art-ring {
+  animation: artRing 3.4s var(--ease-in-out) infinite;
+}
+
+.is-live .art-ring--2 {
+  animation-delay: 1.1s;
+}
+
+@keyframes artRing {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  35% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+.art-breathe {
+  transform-origin: center;
+}
+
+.is-live .art-breathe {
+  animation: artBreathe 3.4s var(--ease-in-out) infinite;
+}
+
+@keyframes artBreathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.78);
+  }
+}
+
+/* Waveform bars */
+.art-wave rect {
+  transform-origin: center 220px;
+  transform: scaleY(0.12);
+}
+
+.is-live .art-wave rect {
+  animation: artBar 2.6s var(--ease-in-out) infinite;
+  animation-delay: calc(var(--i) * 45ms);
+}
+
+@keyframes artBar {
+  0%,
+  100% {
+    transform: scaleY(0.12);
+  }
+  45% {
+    transform: scaleY(1);
+  }
+}
+
+/* Blink for the contradicting node */
+.is-live .art-blink {
+  animation: artBlink 1.6s steps(1) infinite;
+}
+
+@keyframes artBlink {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  61%,
+  100% {
+    opacity: 0.25;
+  }
+}
+
+/* Scan line */
+.art-scan {
+  transform: translateY(0);
+}
+
+.is-live .art-scan {
+  animation: artScan 4.2s var(--ease-in-out) infinite;
+}
+
+@keyframes artScan {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(324px);
+  }
+}
+
+/* ============================================================
+   Reduced motion: show the finished state, animate nothing.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .art-fade,
+  .is-live .art-fade {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+  .art-draw,
+  .is-live .art-draw {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .art-ring,
+  .is-live .art-ring {
+    opacity: 0.4;
+    animation: none;
+  }
+  .is-live .art-breathe,
+  .is-live .art-blink,
+  .is-live .art-scan {
+    animation: none;
+  }
+  .art-wave rect,
+  .is-live .art-wave rect {
+    transform: scaleY(1);
+    animation: none;
+  }
+}
