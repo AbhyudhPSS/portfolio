@@ -115,6 +115,28 @@ anything.
 
 ## Deploying
 
-`dist/` is static, so any host works. `vercel.json` ships a CSP, HSTS and the
-usual hardening headers plus immutable caching for hashed assets — if you
-deploy somewhere else, port those headers to that host's config.
+`npm run build` produces a static `dist/` that any host can serve. Production
+domain: `https://abhyudhsolanki.in`.
+
+Host requirements:
+
+- Serve `dist/404.html` for unmatched paths with a 404 status. There is no
+  client-side router, so no SPA rewrite is needed.
+- Serve over HTTPS only.
+- Send these response headers on every path:
+
+```
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+X-Frame-Options: DENY
+```
+
+- Send `Cache-Control: public, max-age=31536000, immutable` for `/assets/*`
+  (filenames are content-hashed).
+
+If the CSP is loosened for any reason (analytics, embeds), update it
+deliberately — the site loads no third-party scripts and makes no network
+requests other than Google Fonts.

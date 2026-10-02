@@ -43,8 +43,8 @@ function siteOrigin(): Plugin {
 `,
       })
 
-      // The 404 is authored as a standalone page; Vercel serves /404.html for
-      // unmatched paths on a static build automatically.
+      // The 404 is authored as a standalone page; the host serves it for
+      // unmatched paths (see README → Deploying).
       this.emitFile({
         type: 'asset',
         fileName: '404.html',
