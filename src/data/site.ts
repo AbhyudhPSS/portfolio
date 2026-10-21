@@ -308,6 +308,7 @@ export const PROJECTS: Project[] = [
     stack: ['React', 'TypeScript', '3D visualisation', 'Interactive UI'],
     accent: '#D68CFF',
     artifact: 'chemverse',
+    link: 'https://chemverse.abhyudhsolanki.in',
   },
   {
     id: 'secureecom',
