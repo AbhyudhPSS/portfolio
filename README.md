@@ -1,7 +1,8 @@
 # Abhyudh Solanki — portfolio
 
-A single-page, art-directed portfolio. React + Vite, no backend, no database,
-no analytics. Deploys as static files.
+A single-page, art-directed portfolio. React + Vite, no backend, no database.
+Cookieless first-party page-view analytics (Vercel Web Analytics) in production
+only. Deploys as static files.
 
 ```bash
 npm install
@@ -137,6 +138,8 @@ X-Frame-Options: DENY
 - Send `Cache-Control: public, max-age=31536000, immutable` for `/assets/*`
   (filenames are content-hashed).
 
-If the CSP is loosened for any reason (analytics, embeds), update it
+If the CSP is loosened for any reason (embeds, extra scripts), update it
 deliberately — the site loads no third-party scripts and makes no network
-requests other than Google Fonts.
+requests other than Google Fonts and its own `/_vercel/insights/*` analytics
+endpoint. On a host other than Vercel, that endpoint does not exist: remove the
+loader in `src/main.tsx` or swap in that host's analytics.
